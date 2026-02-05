@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>On-Call Triage Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121831;
+      --card: #1a2145;
+      --border: #2a3270;
+      --text: #e6e9ff;
+      --muted: #aab0ff;
+      --high: #ff6b6b;
+      --low: #4cd3a5;
+      --accent: #6ea8ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+      padding: 16px;
+    }
+
+    .sidebar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 6px;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .panel h2 {
+      margin-top: 0;
+      font-size: 16px;
+    }
+
+    .pattern {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .pattern-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pattern-title {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .high {
+      background: rgba(255,107,107,0.15);
+      color: var(--high);
+    }
+
+    .low {
+      background: rgba(76,211,165,0.15);
+      color: var(--low);
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 6px 0 10px;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin: 6px 0;
+    }
+
+    li {
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .confidence {
+      font-size: 12px;
+      margin-top: 8px;
+      color: var(--accent);
+    }
+
+    .why {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>On-Call Triage Panel</h1>
+    <p>Proactive incident guidance powered by fast contextual retrieval</p>
+  </header>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Incident Context</h3>
+
+      <label>Service</label>
+      <select>
+        <option>orders-api</option>
+        <option>search-api</option>
+        <option>payments-api</option>
+      </select>
+
+      <label>Environment</label>
+      <select>
+        <option>prod</option>
+        <option>staging</option>
+      </select>
+
+      <label>Symptom</label>
+      <select>
+        <option>p99_latency</option>
+        <option>db_errors</option>
+        <option>packet_loss</option>
+        <option>memory_spike</option>
+      </select>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Patterns -->
+      <div class="panel">
+        <h2>Most Likely Triage Patterns</h2>
+
+        <div class="pattern">
+          <div class="pattern-header">
+            <div class="pattern-title">
+              orders-api: p99_latency
+            </div>
+            <div class="badge high">HIGH</div>
+          </div>
+
+          <div class="meta">
+            Common causes and first checks for tail latency spikes.
+          </div>
+
+          <strong>Likely causes</strong>
+          <ul>
+            <li>Retry storm amplifying load</li>
+            <li>Slow downstream RPC</li>
+            <li>GC pauses causing tail latency</li>
+          </ul>
+
+          <strong>First checks</strong>
+          <ul>
+            <li>Inspect downstream RPC p99 latency</li>
+            <li>Check retries and error amplification</li>
+            <li>Review GC pause metrics</li>
+          </ul>
+
+          <div class="confidence">
+            Confidence score: 0.78
+          </div>
+
+          <div class="why">
+            Shown because service=orders-api, symptom=p99_latency, env=prod
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Insights -->
+      <div class="panel">
+        <h2>Recommended Next Actions</h2>
+        <ol>
+          <li>Open latency runbook</li>
+          <li>Check recent deployments</li>
+          <li>Inspect slow traces</li>
+          <li>Verify downstream health</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
