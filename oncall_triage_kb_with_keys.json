@@ -1,0 +1,3592 @@
+[
+  {
+    "objectID": "pattern-search-api-memory_spike-00",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "search-api: memory_spike triage pattern",
+    "summary": "Common causes and first checks when search-api shows memory_spike.",
+    "tags": [
+      "db",
+      "memory",
+      "mysql",
+      "postgres"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/search-api/memory_spike",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "unbounded queue buffering",
+      "OOM due to larger responses",
+      "memory leak from caching objects"
+    ],
+    "first_checks": [
+      "Check heap / RSS trends and GC pressure",
+      "Review recent changes touching caching",
+      "Check queue/backlog buffering in memory",
+      "Look for high-cardinality metrics or label explosions",
+      "Inspect payload sizes and response caching"
+    ],
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=search-api; symptom=memory_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check heap / RSS trends and GC pressure\n- Review recent changes touching caching\n- Check queue/backlog buffering in memory\n- Look for high-cardinality metrics or label explosions\n- Inspect payload sizes and response caching",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::memory_spike"
+  },
+  {
+    "objectID": "pattern-orders-api-packet_loss-01",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "staging",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "orders-api: packet_loss triage pattern",
+    "summary": "Common causes and first checks when orders-api shows packet_loss.",
+    "tags": [
+      "cache",
+      "mysql",
+      "network",
+      "rate-limit"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/orders-api/packet_loss",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "NAT gateway saturation",
+      "MTU mismatch",
+      "node networking issue"
+    ],
+    "first_checks": [
+      "Check NAT gateway/egress saturation metrics",
+      "Inspect service mesh release notes if recently updated",
+      "Compare packet loss across zones/nodes",
+      "Fail over traffic away from affected zone",
+      "Check node/network interface errors"
+    ],
+    "confidence_score": 0.77,
+    "why_shown_template": "Matched service=orders-api; symptom=packet_loss; env=staging (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check NAT gateway/egress saturation metrics\n- Inspect service mesh release notes if recently updated\n- Compare packet loss across zones/nodes\n- Fail over traffic away from affected zone\n- Check node/network interface errors",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::packet_loss"
+  },
+  {
+    "objectID": "pattern-ingestion-worker-oom_kills-02",
+    "type": "pattern",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "ingestion-worker: oom_kills triage pattern",
+    "summary": "Common causes and first checks when ingestion-worker shows oom_kills.",
+    "tags": [
+      "feature-flag",
+      "kafka",
+      "mysql",
+      "rollout"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/ingestion-worker/oom_kills",
+      "https://example.com/dashboards/ingestion-worker"
+    ],
+    "likely_causes": [
+      "sidecar memory growth",
+      "large batch job running in same pod",
+      "container memory limit too low for peak load"
+    ],
+    "first_checks": [
+      "Review recent deploys for leak-prone changes",
+      "Confirm OOMKilled events and container limits",
+      "Check memory trend leading up to kill",
+      "Consider temporarily raising memory limits",
+      "Look for large batch jobs or spikes in payload size"
+    ],
+    "confidence_score": 0.9,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=oom_kills; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Review recent deploys for leak-prone changes\n- Confirm OOMKilled events and container limits\n- Check memory trend leading up to kill\n- Consider temporarily raising memory limits\n- Look for large batch jobs or spikes in payload size",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::oom_kills"
+  },
+  {
+    "objectID": "pattern-orders-api-p99_latency-03",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "orders-api: p99_latency triage pattern",
+    "summary": "Common causes and first checks when orders-api shows p99_latency.",
+    "tags": [
+      "grpc",
+      "mysql",
+      "redis",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/p99_latency",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "noisy neighbor on shared node",
+      "tail latency from GC pauses",
+      "slow downstream RPC"
+    ],
+    "first_checks": [
+      "Look for retry storms / elevated retries",
+      "Compare tail latency across pods/nodes",
+      "Check downstream RPC p99 latency",
+      "Check p99 per endpoint and payload size distribution",
+      "Inspect GC pause metrics and heap usage"
+    ],
+    "confidence_score": 0.78,
+    "why_shown_template": "Matched service=orders-api; symptom=p99_latency",
+    "checklist_copy_text": "On-call first checks:\n- Look for retry storms / elevated retries\n- Compare tail latency across pods/nodes\n- Check downstream RPC p99 latency\n- Check p99 per endpoint and payload size distribution\n- Inspect GC pause metrics and heap usage",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::p99_latency"
+  },
+  {
+    "objectID": "pattern-orders-api-db_errors-04",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "orders-api: db_errors triage pattern",
+    "summary": "Common causes and first checks when orders-api shows db_errors.",
+    "tags": [
+      "mysql",
+      "queue",
+      "rate-limit",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/db_errors",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "schema migration lock contention",
+      "connection storms exhausting DB",
+      "certificate rotation causing auth failures"
+    ],
+    "first_checks": [
+      "Check migration jobs and locks",
+      "Check DB health dashboard and failover events",
+      "Validate DNS/TLS connectivity to DB",
+      "Review recent query changes",
+      "Inspect connection errors/timeouts in logs"
+    ],
+    "confidence_score": 0.78,
+    "why_shown_template": "Matched service=orders-api; symptom=db_errors; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check migration jobs and locks\n- Check DB health dashboard and failover events\n- Validate DNS/TLS connectivity to DB\n- Review recent query changes\n- Inspect connection errors/timeouts in logs",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::db_errors"
+  },
+  {
+    "objectID": "pattern-recommendations-throttling-05",
+    "type": "pattern",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "recommendations: throttling triage pattern",
+    "summary": "Common causes and first checks when recommendations shows throttling.",
+    "tags": [
+      "autoscaling",
+      "cache",
+      "feature-flag",
+      "postgres"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/recommendations/throttling",
+      "https://example.com/dashboards/recommendations"
+    ],
+    "likely_causes": [
+      "token bucket misconfigured",
+      "rate limit policy too strict",
+      "DDOS-like pattern from buggy client"
+    ],
+    "first_checks": [
+      "Inspect retry rate and backoff behavior",
+      "Consider temporary limit increase for trusted clients",
+      "Review rate limit policy changes",
+      "Check gateway error responses and quotas",
+      "Check inbound traffic rate and top clients"
+    ],
+    "confidence_score": 0.91,
+    "why_shown_template": "Matched service=recommendations; symptom=throttling; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect retry rate and backoff behavior\n- Consider temporary limit increase for trusted clients\n- Review rate limit policy changes\n- Check gateway error responses and quotas\n- Check inbound traffic rate and top clients",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::throttling"
+  },
+  {
+    "objectID": "pattern-recommendations-p95_latency-06",
+    "type": "pattern",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "p95_latency"
+    ],
+    "title": "recommendations: p95_latency triage pattern",
+    "summary": "Common causes and first checks when recommendations shows p95_latency.",
+    "tags": [
+      "db",
+      "grpc",
+      "memory",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/recommendations/p95_latency",
+      "https://example.com/dashboards/recommendations"
+    ],
+    "likely_causes": [
+      "database connection pool exhaustion",
+      "N+1 query regression after deploy",
+      "cache miss spike increasing DB load"
+    ],
+    "first_checks": [
+      "Inspect DB connection count and pool saturation",
+      "Open trace view for top slow endpoints",
+      "Look at cache hit-rate and eviction metrics",
+      "Check recent deploys/rollouts for the service",
+      "Compare latency by availability zone / node"
+    ],
+    "confidence_score": 0.78,
+    "why_shown_template": "Matched service=recommendations; symptom=p95_latency; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect DB connection count and pool saturation\n- Open trace view for top slow endpoints\n- Look at cache hit-rate and eviction metrics\n- Check recent deploys/rollouts for the service\n- Compare latency by availability zone / node",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::p95_latency"
+  },
+  {
+    "objectID": "pattern-search-api-cache_miss_spike-07",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "staging",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "search-api: cache_miss_spike triage pattern",
+    "summary": "Common causes and first checks when search-api shows cache_miss_spike.",
+    "tags": [
+      "grpc",
+      "memory",
+      "queue",
+      "redis"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/search-api/cache_miss_spike",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "cache TTL misconfiguration",
+      "cache stampede from traffic spike",
+      "cache eviction due to memory pressure"
+    ],
+    "first_checks": [
+      "Inspect redis cluster health/failover",
+      "Check for stampede patterns (synchronized misses)",
+      "Check cache eviction and memory pressure",
+      "Validate cache TTL and key namespace changes",
+      "Consider request coalescing / warming keys"
+    ],
+    "confidence_score": 0.93,
+    "why_shown_template": "Matched service=search-api; symptom=cache_miss_spike; env=staging (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect redis cluster health/failover\n- Check for stampede patterns (synchronized misses)\n- Check cache eviction and memory pressure\n- Validate cache TTL and key namespace changes\n- Consider request coalescing / warming keys",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::cache_miss_spike"
+  },
+  {
+    "objectID": "pattern-checkout-api-cache_miss_spike-08",
+    "type": "pattern",
+    "service": "checkout-api",
+    "env": "any",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "checkout-api: cache_miss_spike triage pattern",
+    "summary": "Common causes and first checks when checkout-api shows cache_miss_spike.",
+    "tags": [
+      "feature-flag",
+      "http",
+      "network",
+      "postgres"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/checkout-api/cache_miss_spike",
+      "https://example.com/dashboards/checkout-api"
+    ],
+    "likely_causes": [
+      "cache stampede from traffic spike",
+      "key namespace change after deploy",
+      "cache eviction due to memory pressure"
+    ],
+    "first_checks": [
+      "Inspect redis cluster health/failover",
+      "Validate cache TTL and key namespace changes",
+      "Consider request coalescing / warming keys",
+      "Check cache eviction and memory pressure",
+      "Check for stampede patterns (synchronized misses)"
+    ],
+    "confidence_score": 0.81,
+    "why_shown_template": "Matched service=checkout-api; symptom=cache_miss_spike",
+    "checklist_copy_text": "On-call first checks:\n- Inspect redis cluster health/failover\n- Validate cache TTL and key namespace changes\n- Consider request coalescing / warming keys\n- Check cache eviction and memory pressure\n- Check for stampede patterns (synchronized misses)",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::cache_miss_spike"
+  },
+  {
+    "objectID": "pattern-orders-api-p99_latency-09",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "orders-api: p99_latency triage pattern",
+    "summary": "Common causes and first checks when orders-api shows p99_latency.",
+    "tags": [
+      "dns",
+      "io",
+      "kafka",
+      "mysql"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/p99_latency",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "tail latency from GC pauses",
+      "retry storm amplifying load",
+      "slow downstream RPC"
+    ],
+    "first_checks": [
+      "Check downstream RPC p99 latency",
+      "Check p99 per endpoint and payload size distribution",
+      "Inspect GC pause metrics and heap usage",
+      "Compare tail latency across pods/nodes",
+      "Look for retry storms / elevated retries"
+    ],
+    "confidence_score": 0.75,
+    "why_shown_template": "Matched service=orders-api; symptom=p99_latency",
+    "checklist_copy_text": "On-call first checks:\n- Check downstream RPC p99 latency\n- Check p99 per endpoint and payload size distribution\n- Inspect GC pause metrics and heap usage\n- Compare tail latency across pods/nodes\n- Look for retry storms / elevated retries",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::p99_latency"
+  },
+  {
+    "objectID": "pattern-checkout-api-throttling-10",
+    "type": "pattern",
+    "service": "checkout-api",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "checkout-api: throttling triage pattern",
+    "summary": "Common causes and first checks when checkout-api shows throttling.",
+    "tags": [
+      "io",
+      "kafka",
+      "postgres",
+      "queue"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/checkout-api/throttling",
+      "https://example.com/dashboards/checkout-api"
+    ],
+    "likely_causes": [
+      "client retry storm",
+      "token bucket misconfigured",
+      "DDOS-like pattern from buggy client"
+    ],
+    "first_checks": [
+      "Check gateway error responses and quotas",
+      "Check inbound traffic rate and top clients",
+      "Consider temporary limit increase for trusted clients",
+      "Review rate limit policy changes",
+      "Inspect retry rate and backoff behavior"
+    ],
+    "confidence_score": 0.77,
+    "why_shown_template": "Matched service=checkout-api; symptom=throttling; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check gateway error responses and quotas\n- Check inbound traffic rate and top clients\n- Consider temporary limit increase for trusted clients\n- Review rate limit policy changes\n- Inspect retry rate and backoff behavior",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::throttling"
+  },
+  {
+    "objectID": "pattern-search-api-p95_latency-11",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "staging",
+    "symptoms": [
+      "p95_latency"
+    ],
+    "title": "search-api: p95_latency triage pattern",
+    "summary": "Common causes and first checks when search-api shows p95_latency.",
+    "tags": [
+      "cache",
+      "cpu",
+      "io",
+      "mysql"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/search-api/p95_latency",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "N+1 query regression after deploy",
+      "database connection pool exhaustion",
+      "upstream dependency latency increase"
+    ],
+    "first_checks": [
+      "Look at cache hit-rate and eviction metrics",
+      "Check recent deploys/rollouts for the service",
+      "Compare latency by availability zone / node",
+      "Open trace view for top slow endpoints",
+      "Inspect DB connection count and pool saturation"
+    ],
+    "confidence_score": 0.85,
+    "why_shown_template": "Matched service=search-api; symptom=p95_latency; env=staging (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Look at cache hit-rate and eviction metrics\n- Check recent deploys/rollouts for the service\n- Compare latency by availability zone / node\n- Open trace view for top slow endpoints\n- Inspect DB connection count and pool saturation",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::p95_latency"
+  },
+  {
+    "objectID": "pattern-recommendations-cpu_spike-12",
+    "type": "pattern",
+    "service": "recommendations",
+    "env": "any",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "recommendations: cpu_spike triage pattern",
+    "summary": "Common causes and first checks when recommendations shows cpu_spike.",
+    "tags": [
+      "autoscaling",
+      "k8s",
+      "kafka",
+      "network"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/recommendations/cpu_spike",
+      "https://example.com/dashboards/recommendations"
+    ],
+    "likely_causes": [
+      "traffic surge without autoscaling",
+      "metrics/logging amplification",
+      "hot loop introduced in recent release"
+    ],
+    "first_checks": [
+      "Compare CPU by pod to spot hot shard",
+      "Look for increased log volume or debug flags",
+      "Inspect top CPU-consuming endpoints/traces",
+      "Review recent PRs for expensive code paths",
+      "Check HPA status and scaling events"
+    ],
+    "confidence_score": 0.9,
+    "why_shown_template": "Matched service=recommendations; symptom=cpu_spike",
+    "checklist_copy_text": "On-call first checks:\n- Compare CPU by pod to spot hot shard\n- Look for increased log volume or debug flags\n- Inspect top CPU-consuming endpoints/traces\n- Review recent PRs for expensive code paths\n- Check HPA status and scaling events",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::cpu_spike"
+  },
+  {
+    "objectID": "pattern-notifications-p99_latency-13",
+    "type": "pattern",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "notifications: p99_latency triage pattern",
+    "summary": "Common causes and first checks when notifications shows p99_latency.",
+    "tags": [
+      "network",
+      "postgres",
+      "rollout",
+      "tls"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/notifications/p99_latency",
+      "https://example.com/dashboards/notifications"
+    ],
+    "likely_causes": [
+      "noisy neighbor on shared node",
+      "slow downstream RPC",
+      "tail latency from GC pauses"
+    ],
+    "first_checks": [
+      "Check downstream RPC p99 latency",
+      "Compare tail latency across pods/nodes",
+      "Inspect GC pause metrics and heap usage",
+      "Check p99 per endpoint and payload size distribution",
+      "Look for retry storms / elevated retries"
+    ],
+    "confidence_score": 0.75,
+    "why_shown_template": "Matched service=notifications; symptom=p99_latency",
+    "checklist_copy_text": "On-call first checks:\n- Check downstream RPC p99 latency\n- Compare tail latency across pods/nodes\n- Inspect GC pause metrics and heap usage\n- Check p99 per endpoint and payload size distribution\n- Look for retry storms / elevated retries",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::p99_latency"
+  },
+  {
+    "objectID": "pattern-payments-api-cpu_spike-14",
+    "type": "pattern",
+    "service": "payments-api",
+    "env": "any",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "payments-api: cpu_spike triage pattern",
+    "summary": "Common causes and first checks when payments-api shows cpu_spike.",
+    "tags": [
+      "autoscaling",
+      "grpc",
+      "http",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/payments-api/cpu_spike",
+      "https://example.com/dashboards/payments-api"
+    ],
+    "likely_causes": [
+      "expensive regex / parsing path",
+      "infinite retry loop",
+      "metrics/logging amplification"
+    ],
+    "first_checks": [
+      "Compare CPU by pod to spot hot shard",
+      "Inspect top CPU-consuming endpoints/traces",
+      "Review recent PRs for expensive code paths",
+      "Check HPA status and scaling events",
+      "Look for increased log volume or debug flags"
+    ],
+    "confidence_score": 0.78,
+    "why_shown_template": "Matched service=payments-api; symptom=cpu_spike",
+    "checklist_copy_text": "On-call first checks:\n- Compare CPU by pod to spot hot shard\n- Inspect top CPU-consuming endpoints/traces\n- Review recent PRs for expensive code paths\n- Check HPA status and scaling events\n- Look for increased log volume or debug flags",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::cpu_spike"
+  },
+  {
+    "objectID": "pattern-recommendations-memory_spike-15",
+    "type": "pattern",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "recommendations: memory_spike triage pattern",
+    "summary": "Common causes and first checks when recommendations shows memory_spike.",
+    "tags": [
+      "cpu",
+      "memory",
+      "queue",
+      "redis"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/recommendations/memory_spike",
+      "https://example.com/dashboards/recommendations"
+    ],
+    "likely_causes": [
+      "unbounded queue buffering",
+      "memory leak from caching objects",
+      "large payloads retained in memory"
+    ],
+    "first_checks": [
+      "Review recent changes touching caching",
+      "Check heap / RSS trends and GC pressure",
+      "Check queue/backlog buffering in memory",
+      "Look for high-cardinality metrics or label explosions",
+      "Inspect payload sizes and response caching"
+    ],
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=recommendations; symptom=memory_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Review recent changes touching caching\n- Check heap / RSS trends and GC pressure\n- Check queue/backlog buffering in memory\n- Look for high-cardinality metrics or label explosions\n- Inspect payload sizes and response caching",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::memory_spike"
+  },
+  {
+    "objectID": "pattern-search-api-p99_latency-16",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "search-api: p99_latency triage pattern",
+    "summary": "Common causes and first checks when search-api shows p99_latency.",
+    "tags": [
+      "dns",
+      "memory",
+      "queue",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/p99_latency",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "slow downstream RPC",
+      "tail latency from GC pauses",
+      "lock contention in DB"
+    ],
+    "first_checks": [
+      "Check p99 per endpoint and payload size distribution",
+      "Compare tail latency across pods/nodes",
+      "Inspect GC pause metrics and heap usage",
+      "Look for retry storms / elevated retries",
+      "Check downstream RPC p99 latency"
+    ],
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=search-api; symptom=p99_latency",
+    "checklist_copy_text": "On-call first checks:\n- Check p99 per endpoint and payload size distribution\n- Compare tail latency across pods/nodes\n- Inspect GC pause metrics and heap usage\n- Look for retry storms / elevated retries\n- Check downstream RPC p99 latency",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::p99_latency"
+  },
+  {
+    "objectID": "pattern-orders-api-oom_kills-17",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "staging",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "orders-api: oom_kills triage pattern",
+    "summary": "Common causes and first checks when orders-api shows oom_kills.",
+    "tags": [
+      "kafka",
+      "network",
+      "queue",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/oom_kills",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "memory leak triggered by new code path",
+      "large batch job running in same pod",
+      "sidecar memory growth"
+    ],
+    "first_checks": [
+      "Check memory trend leading up to kill",
+      "Look for large batch jobs or spikes in payload size",
+      "Consider temporarily raising memory limits",
+      "Review recent deploys for leak-prone changes",
+      "Confirm OOMKilled events and container limits"
+    ],
+    "confidence_score": 0.68,
+    "why_shown_template": "Matched service=orders-api; symptom=oom_kills; env=staging (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check memory trend leading up to kill\n- Look for large batch jobs or spikes in payload size\n- Consider temporarily raising memory limits\n- Review recent deploys for leak-prone changes\n- Confirm OOMKilled events and container limits",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::oom_kills"
+  },
+  {
+    "objectID": "pattern-orders-api-5xx_rate-18",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "orders-api: 5xx_rate triage pattern",
+    "summary": "Common causes and first checks when orders-api shows 5xx_rate.",
+    "tags": [
+      "db",
+      "http",
+      "io",
+      "memory"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/5xx_rate",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "misconfigured feature flag",
+      "bad deploy causing unhandled exception",
+      "rate limiting at gateway"
+    ],
+    "first_checks": [
+      "Check downstream dependencies health",
+      "Validate rate limit / gateway config changes",
+      "Check error logs for top exception signature",
+      "Compare 5xx by deploy version / canary vs stable",
+      "Review recent feature flag changes"
+    ],
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=orders-api; symptom=5xx_rate; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check downstream dependencies health\n- Validate rate limit / gateway config changes\n- Check error logs for top exception signature\n- Compare 5xx by deploy version / canary vs stable\n- Review recent feature flag changes",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::5xx_rate"
+  },
+  {
+    "objectID": "pattern-search-api-5xx_rate-19",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "search-api: 5xx_rate triage pattern",
+    "summary": "Common causes and first checks when search-api shows 5xx_rate.",
+    "tags": [
+      "cpu",
+      "grpc",
+      "memory",
+      "mysql"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/5xx_rate",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "misconfigured feature flag",
+      "bad deploy causing unhandled exception",
+      "rate limiting at gateway"
+    ],
+    "first_checks": [
+      "Validate rate limit / gateway config changes",
+      "Compare 5xx by deploy version / canary vs stable",
+      "Review recent feature flag changes",
+      "Check downstream dependencies health",
+      "Check error logs for top exception signature"
+    ],
+    "confidence_score": 0.87,
+    "why_shown_template": "Matched service=search-api; symptom=5xx_rate",
+    "checklist_copy_text": "On-call first checks:\n- Validate rate limit / gateway config changes\n- Compare 5xx by deploy version / canary vs stable\n- Review recent feature flag changes\n- Check downstream dependencies health\n- Check error logs for top exception signature",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::5xx_rate"
+  },
+  {
+    "objectID": "pattern-payments-api-db_errors-20",
+    "type": "pattern",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "payments-api: db_errors triage pattern",
+    "summary": "Common causes and first checks when payments-api shows db_errors.",
+    "tags": [
+      "db",
+      "dns",
+      "io",
+      "kafka"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/payments-api/db_errors",
+      "https://example.com/dashboards/payments-api"
+    ],
+    "likely_causes": [
+      "schema migration lock contention",
+      "DB node failover / read replica lag",
+      "DNS resolution issues to DB host"
+    ],
+    "first_checks": [
+      "Check migration jobs and locks",
+      "Inspect connection errors/timeouts in logs",
+      "Review recent query changes",
+      "Validate DNS/TLS connectivity to DB",
+      "Check DB health dashboard and failover events"
+    ],
+    "confidence_score": 0.87,
+    "why_shown_template": "Matched service=payments-api; symptom=db_errors; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check migration jobs and locks\n- Inspect connection errors/timeouts in logs\n- Review recent query changes\n- Validate DNS/TLS connectivity to DB\n- Check DB health dashboard and failover events",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::db_errors"
+  },
+  {
+    "objectID": "pattern-search-api-packet_loss-21",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "search-api: packet_loss triage pattern",
+    "summary": "Common causes and first checks when search-api shows packet_loss.",
+    "tags": [
+      "feature-flag",
+      "k8s",
+      "mysql",
+      "postgres"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/search-api/packet_loss",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "datacenter/zone impairment",
+      "node networking issue",
+      "NAT gateway saturation"
+    ],
+    "first_checks": [
+      "Fail over traffic away from affected zone",
+      "Check node/network interface errors",
+      "Check NAT gateway/egress saturation metrics",
+      "Compare packet loss across zones/nodes",
+      "Inspect service mesh release notes if recently updated"
+    ],
+    "confidence_score": 0.76,
+    "why_shown_template": "Matched service=search-api; symptom=packet_loss",
+    "checklist_copy_text": "On-call first checks:\n- Fail over traffic away from affected zone\n- Check node/network interface errors\n- Check NAT gateway/egress saturation metrics\n- Compare packet loss across zones/nodes\n- Inspect service mesh release notes if recently updated",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::packet_loss"
+  },
+  {
+    "objectID": "pattern-search-api-cache_miss_spike-22",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "search-api: cache_miss_spike triage pattern",
+    "summary": "Common causes and first checks when search-api shows cache_miss_spike.",
+    "tags": [
+      "dns",
+      "grpc",
+      "postgres",
+      "rate-limit"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/search-api/cache_miss_spike",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "redis cluster failover",
+      "key namespace change after deploy",
+      "cache eviction due to memory pressure"
+    ],
+    "first_checks": [
+      "Validate cache TTL and key namespace changes",
+      "Consider request coalescing / warming keys",
+      "Check for stampede patterns (synchronized misses)",
+      "Check cache eviction and memory pressure",
+      "Inspect redis cluster health/failover"
+    ],
+    "confidence_score": 0.87,
+    "why_shown_template": "Matched service=search-api; symptom=cache_miss_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Validate cache TTL and key namespace changes\n- Consider request coalescing / warming keys\n- Check for stampede patterns (synchronized misses)\n- Check cache eviction and memory pressure\n- Inspect redis cluster health/failover",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::cache_miss_spike"
+  },
+  {
+    "objectID": "pattern-search-api-p95_latency-23",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "p95_latency"
+    ],
+    "title": "search-api: p95_latency triage pattern",
+    "summary": "Common causes and first checks when search-api shows p95_latency.",
+    "tags": [
+      "autoscaling",
+      "grpc",
+      "mysql",
+      "rate-limit"
+    ],
+    "severity": "low",
+    "links": [
+      "https://example.com/runbooks/search-api/p95_latency",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "upstream dependency latency increase",
+      "N+1 query regression after deploy",
+      "database connection pool exhaustion"
+    ],
+    "first_checks": [
+      "Open trace view for top slow endpoints",
+      "Look at cache hit-rate and eviction metrics",
+      "Inspect DB connection count and pool saturation",
+      "Check recent deploys/rollouts for the service",
+      "Compare latency by availability zone / node"
+    ],
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=search-api; symptom=p95_latency; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Open trace view for top slow endpoints\n- Look at cache hit-rate and eviction metrics\n- Inspect DB connection count and pool saturation\n- Check recent deploys/rollouts for the service\n- Compare latency by availability zone / node",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::p95_latency"
+  },
+  {
+    "objectID": "pattern-checkout-api-cache_miss_spike-24",
+    "type": "pattern",
+    "service": "checkout-api",
+    "env": "prod",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "checkout-api: cache_miss_spike triage pattern",
+    "summary": "Common causes and first checks when checkout-api shows cache_miss_spike.",
+    "tags": [
+      "dns",
+      "feature-flag",
+      "kafka",
+      "rate-limit"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/checkout-api/cache_miss_spike",
+      "https://example.com/dashboards/checkout-api"
+    ],
+    "likely_causes": [
+      "redis cluster failover",
+      "cache TTL misconfiguration",
+      "cache eviction due to memory pressure"
+    ],
+    "first_checks": [
+      "Check cache eviction and memory pressure",
+      "Inspect redis cluster health/failover",
+      "Consider request coalescing / warming keys",
+      "Validate cache TTL and key namespace changes",
+      "Check for stampede patterns (synchronized misses)"
+    ],
+    "confidence_score": 0.71,
+    "why_shown_template": "Matched service=checkout-api; symptom=cache_miss_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check cache eviction and memory pressure\n- Inspect redis cluster health/failover\n- Consider request coalescing / warming keys\n- Validate cache TTL and key namespace changes\n- Check for stampede patterns (synchronized misses)",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::cache_miss_spike"
+  },
+  {
+    "objectID": "pattern-search-api-auth_failures-25",
+    "type": "pattern",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "search-api: auth_failures triage pattern",
+    "summary": "Common causes and first checks when search-api shows auth_failures.",
+    "tags": [
+      "http",
+      "kafka",
+      "network",
+      "rate-limit"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/search-api/auth_failures",
+      "https://example.com/dashboards/search-api"
+    ],
+    "likely_causes": [
+      "clock skew causing token expiry",
+      "IDP outage / latency",
+      "JWT signing key mismatch after rotation"
+    ],
+    "first_checks": [
+      "Inspect TLS handshake / cert errors",
+      "Check IDP health and latency",
+      "Check clock skew across nodes",
+      "Review gateway rate limiting policies",
+      "Validate JWT signing key rotation status"
+    ],
+    "confidence_score": 0.79,
+    "why_shown_template": "Matched service=search-api; symptom=auth_failures; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect TLS handshake / cert errors\n- Check IDP health and latency\n- Check clock skew across nodes\n- Review gateway rate limiting policies\n- Validate JWT signing key rotation status",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::auth_failures"
+  },
+  {
+    "objectID": "pattern-checkout-api-oom_kills-26",
+    "type": "pattern",
+    "service": "checkout-api",
+    "env": "staging",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "checkout-api: oom_kills triage pattern",
+    "summary": "Common causes and first checks when checkout-api shows oom_kills.",
+    "tags": [
+      "autoscaling",
+      "db",
+      "http",
+      "io"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/checkout-api/oom_kills",
+      "https://example.com/dashboards/checkout-api"
+    ],
+    "likely_causes": [
+      "serialization of huge payloads",
+      "large batch job running in same pod",
+      "sidecar memory growth"
+    ],
+    "first_checks": [
+      "Check memory trend leading up to kill",
+      "Consider temporarily raising memory limits",
+      "Review recent deploys for leak-prone changes",
+      "Look for large batch jobs or spikes in payload size",
+      "Confirm OOMKilled events and container limits"
+    ],
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=checkout-api; symptom=oom_kills; env=staging (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check memory trend leading up to kill\n- Consider temporarily raising memory limits\n- Review recent deploys for leak-prone changes\n- Look for large batch jobs or spikes in payload size\n- Confirm OOMKilled events and container limits",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::oom_kills"
+  },
+  {
+    "objectID": "pattern-checkout-api-auth_failures-27",
+    "type": "pattern",
+    "service": "checkout-api",
+    "env": "prod",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "checkout-api: auth_failures triage pattern",
+    "summary": "Common causes and first checks when checkout-api shows auth_failures.",
+    "tags": [
+      "http",
+      "memory",
+      "redis",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/checkout-api/auth_failures",
+      "https://example.com/dashboards/checkout-api"
+    ],
+    "likely_causes": [
+      "rate limiting on auth endpoint",
+      "IDP outage / latency",
+      "clock skew causing token expiry"
+    ],
+    "first_checks": [
+      "Inspect TLS handshake / cert errors",
+      "Review gateway rate limiting policies",
+      "Check clock skew across nodes",
+      "Check IDP health and latency",
+      "Validate JWT signing key rotation status"
+    ],
+    "confidence_score": 0.89,
+    "why_shown_template": "Matched service=checkout-api; symptom=auth_failures; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect TLS handshake / cert errors\n- Review gateway rate limiting policies\n- Check clock skew across nodes\n- Check IDP health and latency\n- Validate JWT signing key rotation status",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::auth_failures"
+  },
+  {
+    "objectID": "pattern-notifications-cpu_spike-28",
+    "type": "pattern",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "notifications: cpu_spike triage pattern",
+    "summary": "Common causes and first checks when notifications shows cpu_spike.",
+    "tags": [
+      "dns",
+      "mysql",
+      "rollout",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/notifications/cpu_spike",
+      "https://example.com/dashboards/notifications"
+    ],
+    "likely_causes": [
+      "hot loop introduced in recent release",
+      "expensive regex / parsing path",
+      "traffic surge without autoscaling"
+    ],
+    "first_checks": [
+      "Inspect top CPU-consuming endpoints/traces",
+      "Check HPA status and scaling events",
+      "Compare CPU by pod to spot hot shard",
+      "Look for increased log volume or debug flags",
+      "Review recent PRs for expensive code paths"
+    ],
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=notifications; symptom=cpu_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect top CPU-consuming endpoints/traces\n- Check HPA status and scaling events\n- Compare CPU by pod to spot hot shard\n- Look for increased log volume or debug flags\n- Review recent PRs for expensive code paths",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::cpu_spike"
+  },
+  {
+    "objectID": "pattern-ingestion-worker-cpu_spike-29",
+    "type": "pattern",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "ingestion-worker: cpu_spike triage pattern",
+    "summary": "Common causes and first checks when ingestion-worker shows cpu_spike.",
+    "tags": [
+      "cache",
+      "network",
+      "queue",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/ingestion-worker/cpu_spike",
+      "https://example.com/dashboards/ingestion-worker"
+    ],
+    "likely_causes": [
+      "expensive regex / parsing path",
+      "traffic surge without autoscaling",
+      "infinite retry loop"
+    ],
+    "first_checks": [
+      "Compare CPU by pod to spot hot shard",
+      "Inspect top CPU-consuming endpoints/traces",
+      "Check HPA status and scaling events",
+      "Review recent PRs for expensive code paths",
+      "Look for increased log volume or debug flags"
+    ],
+    "confidence_score": 0.82,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=cpu_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Compare CPU by pod to spot hot shard\n- Inspect top CPU-consuming endpoints/traces\n- Check HPA status and scaling events\n- Review recent PRs for expensive code paths\n- Look for increased log volume or debug flags",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::cpu_spike"
+  },
+  {
+    "objectID": "pattern-notifications-queue_lag-30",
+    "type": "pattern",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "notifications: queue_lag triage pattern",
+    "summary": "Common causes and first checks when notifications shows queue_lag.",
+    "tags": [
+      "cpu",
+      "grpc",
+      "memory",
+      "postgres"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/notifications/queue_lag",
+      "https://example.com/dashboards/notifications"
+    ],
+    "likely_causes": [
+      "poison pill messages causing retries",
+      "autoscaler not scaling consumers",
+      "downstream service slowdown"
+    ],
+    "first_checks": [
+      "Validate downstream service latency",
+      "Inspect partition lag and hot keys",
+      "Check retry/dead-letter queue growth",
+      "Consider adding more consumers temporarily",
+      "Check consumer autoscaling and CPU throttling"
+    ],
+    "confidence_score": 0.75,
+    "why_shown_template": "Matched service=notifications; symptom=queue_lag",
+    "checklist_copy_text": "On-call first checks:\n- Validate downstream service latency\n- Inspect partition lag and hot keys\n- Check retry/dead-letter queue growth\n- Consider adding more consumers temporarily\n- Check consumer autoscaling and CPU throttling",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::queue_lag"
+  },
+  {
+    "objectID": "pattern-orders-api-p99_latency-31",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "orders-api: p99_latency triage pattern",
+    "summary": "Common causes and first checks when orders-api shows p99_latency.",
+    "tags": [
+      "autoscaling",
+      "cache",
+      "mysql",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/orders-api/p99_latency",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "lock contention in DB",
+      "noisy neighbor on shared node",
+      "retry storm amplifying load"
+    ],
+    "first_checks": [
+      "Look for retry storms / elevated retries",
+      "Check downstream RPC p99 latency",
+      "Compare tail latency across pods/nodes",
+      "Inspect GC pause metrics and heap usage",
+      "Check p99 per endpoint and payload size distribution"
+    ],
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=orders-api; symptom=p99_latency; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Look for retry storms / elevated retries\n- Check downstream RPC p99 latency\n- Compare tail latency across pods/nodes\n- Inspect GC pause metrics and heap usage\n- Check p99 per endpoint and payload size distribution",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::p99_latency"
+  },
+  {
+    "objectID": "pattern-ingestion-worker-queue_lag-32",
+    "type": "pattern",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "ingestion-worker: queue_lag triage pattern",
+    "summary": "Common causes and first checks when ingestion-worker shows queue_lag.",
+    "tags": [
+      "autoscaling",
+      "dns",
+      "feature-flag",
+      "http"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/ingestion-worker/queue_lag",
+      "https://example.com/dashboards/ingestion-worker"
+    ],
+    "likely_causes": [
+      "autoscaler not scaling consumers",
+      "consumer lag due to CPU throttling",
+      "poison pill messages causing retries"
+    ],
+    "first_checks": [
+      "Validate downstream service latency",
+      "Consider adding more consumers temporarily",
+      "Check retry/dead-letter queue growth",
+      "Check consumer autoscaling and CPU throttling",
+      "Inspect partition lag and hot keys"
+    ],
+    "confidence_score": 0.8,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=queue_lag; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Validate downstream service latency\n- Consider adding more consumers temporarily\n- Check retry/dead-letter queue growth\n- Check consumer autoscaling and CPU throttling\n- Inspect partition lag and hot keys",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::queue_lag"
+  },
+  {
+    "objectID": "pattern-orders-api-memory_spike-33",
+    "type": "pattern",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "orders-api: memory_spike triage pattern",
+    "summary": "Common causes and first checks when orders-api shows memory_spike.",
+    "tags": [
+      "autoscaling",
+      "cache",
+      "db",
+      "io"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/runbooks/orders-api/memory_spike",
+      "https://example.com/dashboards/orders-api"
+    ],
+    "likely_causes": [
+      "high cardinality metrics",
+      "OOM due to larger responses",
+      "memory leak from caching objects"
+    ],
+    "first_checks": [
+      "Inspect payload sizes and response caching",
+      "Check queue/backlog buffering in memory",
+      "Review recent changes touching caching",
+      "Look for high-cardinality metrics or label explosions",
+      "Check heap / RSS trends and GC pressure"
+    ],
+    "confidence_score": 0.9,
+    "why_shown_template": "Matched service=orders-api; symptom=memory_spike; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Inspect payload sizes and response caching\n- Check queue/backlog buffering in memory\n- Review recent changes touching caching\n- Look for high-cardinality metrics or label explosions\n- Check heap / RSS trends and GC pressure",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::memory_spike"
+  },
+  {
+    "objectID": "pattern-payments-api-db_errors-34",
+    "type": "pattern",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "payments-api: db_errors triage pattern",
+    "summary": "Common causes and first checks when payments-api shows db_errors.",
+    "tags": [
+      "autoscaling",
+      "dns",
+      "grpc",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/payments-api/db_errors",
+      "https://example.com/dashboards/payments-api"
+    ],
+    "likely_causes": [
+      "connection storms exhausting DB",
+      "DNS resolution issues to DB host",
+      "DB node failover / read replica lag"
+    ],
+    "first_checks": [
+      "Check DB health dashboard and failover events",
+      "Check migration jobs and locks",
+      "Inspect connection errors/timeouts in logs",
+      "Validate DNS/TLS connectivity to DB",
+      "Review recent query changes"
+    ],
+    "confidence_score": 0.8,
+    "why_shown_template": "Matched service=payments-api; symptom=db_errors; env=prod (or any)",
+    "checklist_copy_text": "On-call first checks:\n- Check DB health dashboard and failover events\n- Check migration jobs and locks\n- Inspect connection errors/timeouts in logs\n- Validate DNS/TLS connectivity to DB\n- Review recent query changes",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::db_errors"
+  },
+  {
+    "objectID": "runbook-search-api-queue_lag-00",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Runbook: search-api \u2014 queue_lag (Quick triage)",
+    "summary": "Runbook section for handling queue_lag on search-api.",
+    "tags": [
+      "feature-flag",
+      "io",
+      "k8s"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/queue_lag#quick-triage"
+    ],
+    "section": "Quick triage",
+    "confidence_score": 0.66,
+    "why_shown_template": "Matched service=search-api; symptom=queue_lag; runbook_section=Quick triage",
+    "checklist_copy_text": "Open runbook section: Quick triage",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::queue_lag"
+  },
+  {
+    "objectID": "runbook-search-api-throttling-01",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Runbook: search-api \u2014 throttling (Quick triage)",
+    "summary": "Runbook section for handling throttling on search-api.",
+    "tags": [
+      "db",
+      "mysql",
+      "postgres"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/throttling#quick-triage"
+    ],
+    "section": "Quick triage",
+    "confidence_score": 0.83,
+    "why_shown_template": "Matched service=search-api; symptom=throttling; runbook_section=Quick triage",
+    "checklist_copy_text": "Open runbook section: Quick triage",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::throttling"
+  },
+  {
+    "objectID": "runbook-auth-api-cpu_spike-02",
+    "type": "runbook",
+    "service": "auth-api",
+    "env": "any",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Runbook: auth-api \u2014 cpu_spike (Known failure modes)",
+    "summary": "Runbook section for handling cpu_spike on auth-api.",
+    "tags": [
+      "cpu",
+      "mysql",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/auth-api/cpu_spike#known-failure-modes"
+    ],
+    "section": "Known failure modes",
+    "confidence_score": 0.73,
+    "why_shown_template": "Matched service=auth-api; symptom=cpu_spike; runbook_section=Known failure modes",
+    "checklist_copy_text": "Open runbook section: Known failure modes",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::cpu_spike"
+  },
+  {
+    "objectID": "runbook-checkout-api-oom_kills-03",
+    "type": "runbook",
+    "service": "checkout-api",
+    "env": "any",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Runbook: checkout-api \u2014 oom_kills (Known failure modes)",
+    "summary": "Runbook section for handling oom_kills on checkout-api.",
+    "tags": [
+      "kafka",
+      "network",
+      "redis"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/checkout-api/oom_kills#known-failure-modes"
+    ],
+    "section": "Known failure modes",
+    "confidence_score": 0.87,
+    "why_shown_template": "Matched service=checkout-api; symptom=oom_kills; runbook_section=Known failure modes",
+    "checklist_copy_text": "Open runbook section: Known failure modes",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::oom_kills"
+  },
+  {
+    "objectID": "runbook-search-api-auth_failures-04",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Runbook: search-api \u2014 auth_failures (Quick triage)",
+    "summary": "Runbook section for handling auth_failures on search-api.",
+    "tags": [
+      "autoscaling",
+      "http",
+      "queue"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/auth_failures#quick-triage"
+    ],
+    "section": "Quick triage",
+    "confidence_score": 0.71,
+    "why_shown_template": "Matched service=search-api; symptom=auth_failures; runbook_section=Quick triage",
+    "checklist_copy_text": "Open runbook section: Quick triage",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::auth_failures"
+  },
+  {
+    "objectID": "runbook-orders-api-p99_latency-05",
+    "type": "runbook",
+    "service": "orders-api",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Runbook: orders-api \u2014 p99_latency (Mitigations)",
+    "summary": "Runbook section for handling p99_latency on orders-api.",
+    "tags": [
+      "http",
+      "network",
+      "postgres"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/orders-api/p99_latency#mitigations"
+    ],
+    "section": "Mitigations",
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=orders-api; symptom=p99_latency; runbook_section=Mitigations",
+    "checklist_copy_text": "Open runbook section: Mitigations",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::p99_latency"
+  },
+  {
+    "objectID": "runbook-search-api-auth_failures-06",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Runbook: search-api \u2014 auth_failures (Escalation)",
+    "summary": "Runbook section for handling auth_failures on search-api.",
+    "tags": [
+      "feature-flag",
+      "io",
+      "k8s"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/auth_failures#escalation"
+    ],
+    "section": "Escalation",
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=search-api; symptom=auth_failures; runbook_section=Escalation",
+    "checklist_copy_text": "Open runbook section: Escalation",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::auth_failures"
+  },
+  {
+    "objectID": "runbook-notifications-p99_latency-07",
+    "type": "runbook",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Runbook: notifications \u2014 p99_latency (Mitigations)",
+    "summary": "Runbook section for handling p99_latency on notifications.",
+    "tags": [
+      "db",
+      "dns",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/notifications/p99_latency#mitigations"
+    ],
+    "section": "Mitigations",
+    "confidence_score": 0.83,
+    "why_shown_template": "Matched service=notifications; symptom=p99_latency; runbook_section=Mitigations",
+    "checklist_copy_text": "Open runbook section: Mitigations",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::p99_latency"
+  },
+  {
+    "objectID": "runbook-search-api-db_errors-08",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "Runbook: search-api \u2014 db_errors (Rollback checklist)",
+    "summary": "Runbook section for handling db_errors on search-api.",
+    "tags": [
+      "cache",
+      "dns",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/db_errors#rollback-checklist"
+    ],
+    "section": "Rollback checklist",
+    "confidence_score": 0.65,
+    "why_shown_template": "Matched service=search-api; symptom=db_errors; runbook_section=Rollback checklist",
+    "checklist_copy_text": "Open runbook section: Rollback checklist",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::db_errors"
+  },
+  {
+    "objectID": "runbook-checkout-api-auth_failures-09",
+    "type": "runbook",
+    "service": "checkout-api",
+    "env": "any",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Runbook: checkout-api \u2014 auth_failures (Escalation)",
+    "summary": "Runbook section for handling auth_failures on checkout-api.",
+    "tags": [
+      "cpu",
+      "io",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/checkout-api/auth_failures#escalation"
+    ],
+    "section": "Escalation",
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=checkout-api; symptom=auth_failures; runbook_section=Escalation",
+    "checklist_copy_text": "Open runbook section: Escalation",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::auth_failures"
+  },
+  {
+    "objectID": "runbook-checkout-api-oom_kills-10",
+    "type": "runbook",
+    "service": "checkout-api",
+    "env": "any",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Runbook: checkout-api \u2014 oom_kills (Escalation)",
+    "summary": "Runbook section for handling oom_kills on checkout-api.",
+    "tags": [
+      "grpc",
+      "postgres",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/checkout-api/oom_kills#escalation"
+    ],
+    "section": "Escalation",
+    "confidence_score": 0.85,
+    "why_shown_template": "Matched service=checkout-api; symptom=oom_kills; runbook_section=Escalation",
+    "checklist_copy_text": "Open runbook section: Escalation",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::oom_kills"
+  },
+  {
+    "objectID": "runbook-orders-api-queue_lag-11",
+    "type": "runbook",
+    "service": "orders-api",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Runbook: orders-api \u2014 queue_lag (Mitigations)",
+    "summary": "Runbook section for handling queue_lag on orders-api.",
+    "tags": [
+      "autoscaling",
+      "kafka",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/orders-api/queue_lag#mitigations"
+    ],
+    "section": "Mitigations",
+    "confidence_score": 0.61,
+    "why_shown_template": "Matched service=orders-api; symptom=queue_lag; runbook_section=Mitigations",
+    "checklist_copy_text": "Open runbook section: Mitigations",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::queue_lag"
+  },
+  {
+    "objectID": "runbook-notifications-5xx_rate-12",
+    "type": "runbook",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "Runbook: notifications \u2014 5xx_rate (Dependency checks)",
+    "summary": "Runbook section for handling 5xx_rate on notifications.",
+    "tags": [
+      "feature-flag",
+      "grpc",
+      "mysql"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/notifications/5xx_rate#dependency-checks"
+    ],
+    "section": "Dependency checks",
+    "confidence_score": 0.7,
+    "why_shown_template": "Matched service=notifications; symptom=5xx_rate; runbook_section=Dependency checks",
+    "checklist_copy_text": "Open runbook section: Dependency checks",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::5xx_rate"
+  },
+  {
+    "objectID": "runbook-checkout-api-cache_miss_spike-13",
+    "type": "runbook",
+    "service": "checkout-api",
+    "env": "any",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "Runbook: checkout-api \u2014 cache_miss_spike (Quick triage)",
+    "summary": "Runbook section for handling cache_miss_spike on checkout-api.",
+    "tags": [
+      "memory",
+      "mysql",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/checkout-api/cache_miss_spike#quick-triage"
+    ],
+    "section": "Quick triage",
+    "confidence_score": 0.67,
+    "why_shown_template": "Matched service=checkout-api; symptom=cache_miss_spike; runbook_section=Quick triage",
+    "checklist_copy_text": "Open runbook section: Quick triage",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::cache_miss_spike"
+  },
+  {
+    "objectID": "runbook-ingestion-worker-queue_lag-14",
+    "type": "runbook",
+    "service": "ingestion-worker",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Runbook: ingestion-worker \u2014 queue_lag (Mitigations)",
+    "summary": "Runbook section for handling queue_lag on ingestion-worker.",
+    "tags": [
+      "cpu",
+      "postgres",
+      "queue"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/ingestion-worker/queue_lag#mitigations"
+    ],
+    "section": "Mitigations",
+    "confidence_score": 0.73,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=queue_lag; runbook_section=Mitigations",
+    "checklist_copy_text": "Open runbook section: Mitigations",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::queue_lag"
+  },
+  {
+    "objectID": "runbook-payments-api-p99_latency-15",
+    "type": "runbook",
+    "service": "payments-api",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Runbook: payments-api \u2014 p99_latency (Rollback checklist)",
+    "summary": "Runbook section for handling p99_latency on payments-api.",
+    "tags": [
+      "autoscaling",
+      "kafka",
+      "postgres"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/payments-api/p99_latency#rollback-checklist"
+    ],
+    "section": "Rollback checklist",
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=payments-api; symptom=p99_latency; runbook_section=Rollback checklist",
+    "checklist_copy_text": "Open runbook section: Rollback checklist",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::p99_latency"
+  },
+  {
+    "objectID": "runbook-notifications-queue_lag-16",
+    "type": "runbook",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Runbook: notifications \u2014 queue_lag (Mitigations)",
+    "summary": "Runbook section for handling queue_lag on notifications.",
+    "tags": [
+      "dns",
+      "feature-flag",
+      "memory"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/notifications/queue_lag#mitigations"
+    ],
+    "section": "Mitigations",
+    "confidence_score": 0.88,
+    "why_shown_template": "Matched service=notifications; symptom=queue_lag; runbook_section=Mitigations",
+    "checklist_copy_text": "Open runbook section: Mitigations",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::queue_lag"
+  },
+  {
+    "objectID": "runbook-notifications-oom_kills-17",
+    "type": "runbook",
+    "service": "notifications",
+    "env": "any",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Runbook: notifications \u2014 oom_kills (Verification)",
+    "summary": "Runbook section for handling oom_kills on notifications.",
+    "tags": [
+      "grpc",
+      "http",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/notifications/oom_kills#verification"
+    ],
+    "section": "Verification",
+    "confidence_score": 0.67,
+    "why_shown_template": "Matched service=notifications; symptom=oom_kills; runbook_section=Verification",
+    "checklist_copy_text": "Open runbook section: Verification",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::oom_kills"
+  },
+  {
+    "objectID": "runbook-search-api-packet_loss-18",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "Runbook: search-api \u2014 packet_loss (Known failure modes)",
+    "summary": "Runbook section for handling packet_loss on search-api.",
+    "tags": [
+      "io",
+      "network",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/packet_loss#known-failure-modes"
+    ],
+    "section": "Known failure modes",
+    "confidence_score": 0.87,
+    "why_shown_template": "Matched service=search-api; symptom=packet_loss; runbook_section=Known failure modes",
+    "checklist_copy_text": "Open runbook section: Known failure modes",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::packet_loss"
+  },
+  {
+    "objectID": "runbook-auth-api-cpu_spike-19",
+    "type": "runbook",
+    "service": "auth-api",
+    "env": "any",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Runbook: auth-api \u2014 cpu_spike (Known failure modes)",
+    "summary": "Runbook section for handling cpu_spike on auth-api.",
+    "tags": [
+      "cpu",
+      "grpc",
+      "memory"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/auth-api/cpu_spike#known-failure-modes"
+    ],
+    "section": "Known failure modes",
+    "confidence_score": 0.77,
+    "why_shown_template": "Matched service=auth-api; symptom=cpu_spike; runbook_section=Known failure modes",
+    "checklist_copy_text": "Open runbook section: Known failure modes",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::cpu_spike"
+  },
+  {
+    "objectID": "runbook-search-api-cpu_spike-20",
+    "type": "runbook",
+    "service": "search-api",
+    "env": "any",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Runbook: search-api \u2014 cpu_spike (Rollback checklist)",
+    "summary": "Runbook section for handling cpu_spike on search-api.",
+    "tags": [
+      "feature-flag",
+      "postgres",
+      "redis"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/search-api/cpu_spike#rollback-checklist"
+    ],
+    "section": "Rollback checklist",
+    "confidence_score": 0.68,
+    "why_shown_template": "Matched service=search-api; symptom=cpu_spike; runbook_section=Rollback checklist",
+    "checklist_copy_text": "Open runbook section: Rollback checklist",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::cpu_spike"
+  },
+  {
+    "objectID": "runbook-auth-api-memory_spike-21",
+    "type": "runbook",
+    "service": "auth-api",
+    "env": "any",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Runbook: auth-api \u2014 memory_spike (Quick triage)",
+    "summary": "Runbook section for handling memory_spike on auth-api.",
+    "tags": [
+      "http",
+      "io",
+      "k8s"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/auth-api/memory_spike#quick-triage"
+    ],
+    "section": "Quick triage",
+    "confidence_score": 0.8,
+    "why_shown_template": "Matched service=auth-api; symptom=memory_spike; runbook_section=Quick triage",
+    "checklist_copy_text": "Open runbook section: Quick triage",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::memory_spike"
+  },
+  {
+    "objectID": "runbook-auth-api-throttling-22",
+    "type": "runbook",
+    "service": "auth-api",
+    "env": "any",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Runbook: auth-api \u2014 throttling (Escalation)",
+    "summary": "Runbook section for handling throttling on auth-api.",
+    "tags": [
+      "cpu",
+      "db",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/auth-api/throttling#escalation"
+    ],
+    "section": "Escalation",
+    "confidence_score": 0.76,
+    "why_shown_template": "Matched service=auth-api; symptom=throttling; runbook_section=Escalation",
+    "checklist_copy_text": "Open runbook section: Escalation",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::throttling"
+  },
+  {
+    "objectID": "runbook-recommendations-queue_lag-23",
+    "type": "runbook",
+    "service": "recommendations",
+    "env": "any",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Runbook: recommendations \u2014 queue_lag (Dependency checks)",
+    "summary": "Runbook section for handling queue_lag on recommendations.",
+    "tags": [
+      "k8s",
+      "rate-limit",
+      "redis"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/recommendations/queue_lag#dependency-checks"
+    ],
+    "section": "Dependency checks",
+    "confidence_score": 0.67,
+    "why_shown_template": "Matched service=recommendations; symptom=queue_lag; runbook_section=Dependency checks",
+    "checklist_copy_text": "Open runbook section: Dependency checks",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::queue_lag"
+  },
+  {
+    "objectID": "runbook-recommendations-p99_latency-24",
+    "type": "runbook",
+    "service": "recommendations",
+    "env": "any",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Runbook: recommendations \u2014 p99_latency (Escalation)",
+    "summary": "Runbook section for handling p99_latency on recommendations.",
+    "tags": [
+      "autoscaling",
+      "cpu",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/runbooks/recommendations/p99_latency#escalation"
+    ],
+    "section": "Escalation",
+    "confidence_score": 0.62,
+    "why_shown_template": "Matched service=recommendations; symptom=p99_latency; runbook_section=Escalation",
+    "checklist_copy_text": "Open runbook section: Escalation",
+    "match_keys": [
+      "service",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::p99_latency"
+  },
+  {
+    "objectID": "incident-payments-api-auth_failures-00",
+    "type": "incident",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Incident: payments-api auth_failures \u2014 elevated error rate",
+    "summary": "Past incident involving payments-api with auth_failures. Root cause: clock skew causing token expiry.",
+    "tags": [
+      "dns",
+      "io",
+      "network",
+      "postgres"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-payments-api-auth_failures-00",
+      "https://example.com/pr/8381"
+    ],
+    "occurred_at": 1749168344,
+    "impact": "elevated error rate",
+    "root_cause": "clock skew causing token expiry",
+    "confidence_score": 0.82,
+    "why_shown_template": "Matched service=payments-api; symptom=auth_failures; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::auth_failures"
+  },
+  {
+    "objectID": "incident-checkout-api-db_errors-01",
+    "type": "incident",
+    "service": "checkout-api",
+    "env": "staging",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "Incident: checkout-api db_errors \u2014 degraded throughput",
+    "summary": "Past incident involving checkout-api with db_errors. Root cause: certificate rotation causing auth failures.",
+    "tags": [
+      "io",
+      "k8s",
+      "mysql",
+      "network"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-checkout-api-db_errors-01",
+      "https://example.com/pr/2330"
+    ],
+    "occurred_at": 1749064679,
+    "impact": "degraded throughput",
+    "root_cause": "certificate rotation causing auth failures",
+    "confidence_score": 0.6,
+    "why_shown_template": "Matched service=checkout-api; symptom=db_errors; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::db_errors"
+  },
+  {
+    "objectID": "incident-auth-api-5xx_rate-02",
+    "type": "incident",
+    "service": "auth-api",
+    "env": "prod",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "Incident: auth-api 5xx_rate \u2014 request timeouts",
+    "summary": "Past incident involving auth-api with 5xx_rate. Root cause: rate limiting at gateway.",
+    "tags": [
+      "cpu",
+      "http",
+      "k8s",
+      "kafka"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-auth-api-5xx_rate-02",
+      "https://example.com/pr/5720"
+    ],
+    "occurred_at": 1769378836,
+    "impact": "request timeouts",
+    "root_cause": "rate limiting at gateway",
+    "confidence_score": 0.76,
+    "why_shown_template": "Matched service=auth-api; symptom=5xx_rate; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::5xx_rate"
+  },
+  {
+    "objectID": "incident-recommendations-cpu_spike-03",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Incident: recommendations cpu_spike \u2014 intermittent failures",
+    "summary": "Past incident involving recommendations with cpu_spike. Root cause: metrics/logging amplification.",
+    "tags": [
+      "dns",
+      "mysql",
+      "network",
+      "postgres"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-cpu_spike-03",
+      "https://example.com/pr/5352"
+    ],
+    "occurred_at": 1751804440,
+    "impact": "intermittent failures",
+    "root_cause": "metrics/logging amplification",
+    "confidence_score": 0.8,
+    "why_shown_template": "Matched service=recommendations; symptom=cpu_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::cpu_spike"
+  },
+  {
+    "objectID": "incident-search-api-memory_spike-04",
+    "type": "incident",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Incident: search-api memory_spike \u2014 request timeouts",
+    "summary": "Past incident involving search-api with memory_spike. Root cause: memory leak from caching objects.",
+    "tags": [
+      "autoscaling",
+      "grpc",
+      "http",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-search-api-memory_spike-04",
+      "https://example.com/pr/8172"
+    ],
+    "occurred_at": 1750190072,
+    "impact": "request timeouts",
+    "root_cause": "memory leak from caching objects",
+    "confidence_score": 0.57,
+    "why_shown_template": "Matched service=search-api; symptom=memory_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::memory_spike"
+  },
+  {
+    "objectID": "incident-payments-api-packet_loss-05",
+    "type": "incident",
+    "service": "payments-api",
+    "env": "staging",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "Incident: payments-api packet_loss \u2014 degraded throughput",
+    "summary": "Past incident involving payments-api with packet_loss. Root cause: service mesh sidecar regression.",
+    "tags": [
+      "db",
+      "kafka",
+      "postgres",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-payments-api-packet_loss-05",
+      "https://example.com/pr/1659"
+    ],
+    "occurred_at": 1747927765,
+    "impact": "degraded throughput",
+    "root_cause": "service mesh sidecar regression",
+    "confidence_score": 0.78,
+    "why_shown_template": "Matched service=payments-api; symptom=packet_loss; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::packet_loss"
+  },
+  {
+    "objectID": "incident-auth-api-throttling-06",
+    "type": "incident",
+    "service": "auth-api",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Incident: auth-api throttling \u2014 partial outage",
+    "summary": "Past incident involving auth-api with throttling. Root cause: rate limit policy too strict.",
+    "tags": [
+      "cpu",
+      "dns",
+      "queue",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-auth-api-throttling-06",
+      "https://example.com/pr/6700"
+    ],
+    "occurred_at": 1739880888,
+    "impact": "partial outage",
+    "root_cause": "rate limit policy too strict",
+    "confidence_score": 0.67,
+    "why_shown_template": "Matched service=auth-api; symptom=throttling; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::throttling"
+  },
+  {
+    "objectID": "incident-notifications-5xx_rate-07",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "Incident: notifications 5xx_rate \u2014 request timeouts",
+    "summary": "Past incident involving notifications with 5xx_rate. Root cause: rate limiting at gateway.",
+    "tags": [
+      "autoscaling",
+      "http",
+      "io",
+      "k8s"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-5xx_rate-07",
+      "https://example.com/pr/2442"
+    ],
+    "occurred_at": 1747425651,
+    "impact": "request timeouts",
+    "root_cause": "rate limiting at gateway",
+    "confidence_score": 0.64,
+    "why_shown_template": "Matched service=notifications; symptom=5xx_rate; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::5xx_rate"
+  },
+  {
+    "objectID": "incident-notifications-db_errors-08",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "Incident: notifications db_errors \u2014 elevated error rate",
+    "summary": "Past incident involving notifications with db_errors. Root cause: certificate rotation causing auth failures.",
+    "tags": [
+      "dns",
+      "k8s",
+      "mysql",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-db_errors-08",
+      "https://example.com/pr/9167"
+    ],
+    "occurred_at": 1735024431,
+    "impact": "elevated error rate",
+    "root_cause": "certificate rotation causing auth failures",
+    "confidence_score": 0.74,
+    "why_shown_template": "Matched service=notifications; symptom=db_errors; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::db_errors"
+  },
+  {
+    "objectID": "incident-payments-api-cache_miss_spike-09",
+    "type": "incident",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "Incident: payments-api cache_miss_spike \u2014 partial outage",
+    "summary": "Past incident involving payments-api with cache_miss_spike. Root cause: redis cluster failover.",
+    "tags": [
+      "cpu",
+      "db",
+      "network",
+      "postgres"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-payments-api-cache_miss_spike-09",
+      "https://example.com/pr/6091"
+    ],
+    "occurred_at": 1760766252,
+    "impact": "partial outage",
+    "root_cause": "redis cluster failover",
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=payments-api; symptom=cache_miss_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::cache_miss_spike"
+  },
+  {
+    "objectID": "incident-ingestion-worker-p99_latency-10",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Incident: ingestion-worker p99_latency \u2014 elevated error rate",
+    "summary": "Past incident involving ingestion-worker with p99_latency. Root cause: noisy neighbor on shared node.",
+    "tags": [
+      "cpu",
+      "grpc",
+      "http",
+      "memory"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-p99_latency-10",
+      "https://example.com/pr/8905"
+    ],
+    "occurred_at": 1738591157,
+    "impact": "elevated error rate",
+    "root_cause": "noisy neighbor on shared node",
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=p99_latency; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::p99_latency"
+  },
+  {
+    "objectID": "incident-orders-api-5xx_rate-11",
+    "type": "incident",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "Incident: orders-api 5xx_rate \u2014 increased latency",
+    "summary": "Past incident involving orders-api with 5xx_rate. Root cause: DB timeouts causing request failures.",
+    "tags": [
+      "cache",
+      "grpc",
+      "memory",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-orders-api-5xx_rate-11",
+      "https://example.com/pr/6568"
+    ],
+    "occurred_at": 1743816379,
+    "impact": "increased latency",
+    "root_cause": "DB timeouts causing request failures",
+    "confidence_score": 0.83,
+    "why_shown_template": "Matched service=orders-api; symptom=5xx_rate; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::5xx_rate"
+  },
+  {
+    "objectID": "incident-checkout-api-memory_spike-12",
+    "type": "incident",
+    "service": "checkout-api",
+    "env": "staging",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Incident: checkout-api memory_spike \u2014 degraded throughput",
+    "summary": "Past incident involving checkout-api with memory_spike. Root cause: OOM due to larger responses.",
+    "tags": [
+      "cache",
+      "cpu",
+      "kafka",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-checkout-api-memory_spike-12",
+      "https://example.com/pr/6446"
+    ],
+    "occurred_at": 1749522657,
+    "impact": "degraded throughput",
+    "root_cause": "OOM due to larger responses",
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=checkout-api; symptom=memory_spike; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::memory_spike"
+  },
+  {
+    "objectID": "incident-ingestion-worker-oom_kills-13",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Incident: ingestion-worker oom_kills \u2014 intermittent failures",
+    "summary": "Past incident involving ingestion-worker with oom_kills. Root cause: memory leak triggered by new code path.",
+    "tags": [
+      "autoscaling",
+      "dns",
+      "postgres",
+      "queue"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-oom_kills-13",
+      "https://example.com/pr/6213"
+    ],
+    "occurred_at": 1756898154,
+    "impact": "intermittent failures",
+    "root_cause": "memory leak triggered by new code path",
+    "confidence_score": 0.77,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=oom_kills; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::oom_kills"
+  },
+  {
+    "objectID": "incident-ingestion-worker-throttling-14",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Incident: ingestion-worker throttling \u2014 request timeouts",
+    "summary": "Past incident involving ingestion-worker with throttling. Root cause: unexpected traffic surge.",
+    "tags": [
+      "cache",
+      "memory",
+      "network",
+      "rate-limit"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-throttling-14",
+      "https://example.com/pr/2633"
+    ],
+    "occurred_at": 1759350785,
+    "impact": "request timeouts",
+    "root_cause": "unexpected traffic surge",
+    "confidence_score": 0.71,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=throttling; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::throttling"
+  },
+  {
+    "objectID": "incident-recommendations-5xx_rate-15",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "5xx_rate"
+    ],
+    "title": "Incident: recommendations 5xx_rate \u2014 intermittent failures",
+    "summary": "Past incident involving recommendations with 5xx_rate. Root cause: downstream dependency returning errors.",
+    "tags": [
+      "cpu",
+      "grpc",
+      "rate-limit",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-5xx_rate-15",
+      "https://example.com/pr/2315"
+    ],
+    "occurred_at": 1742045201,
+    "impact": "intermittent failures",
+    "root_cause": "downstream dependency returning errors",
+    "confidence_score": 0.81,
+    "why_shown_template": "Matched service=recommendations; symptom=5xx_rate; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::5xx_rate"
+  },
+  {
+    "objectID": "incident-ingestion-worker-throttling-16",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "staging",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Incident: ingestion-worker throttling \u2014 degraded throughput",
+    "summary": "Past incident involving ingestion-worker with throttling. Root cause: unexpected traffic surge.",
+    "tags": [
+      "http",
+      "kafka",
+      "postgres",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-throttling-16",
+      "https://example.com/pr/2480"
+    ],
+    "occurred_at": 1736812799,
+    "impact": "degraded throughput",
+    "root_cause": "unexpected traffic surge",
+    "confidence_score": 0.68,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=throttling; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::throttling"
+  },
+  {
+    "objectID": "incident-search-api-packet_loss-17",
+    "type": "incident",
+    "service": "search-api",
+    "env": "prod",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "Incident: search-api packet_loss \u2014 request timeouts",
+    "summary": "Past incident involving search-api with packet_loss. Root cause: datacenter/zone impairment.",
+    "tags": [
+      "db",
+      "http",
+      "k8s",
+      "rate-limit"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-search-api-packet_loss-17",
+      "https://example.com/pr/5806"
+    ],
+    "occurred_at": 1762813474,
+    "impact": "request timeouts",
+    "root_cause": "datacenter/zone impairment",
+    "confidence_score": 0.66,
+    "why_shown_template": "Matched service=search-api; symptom=packet_loss; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::packet_loss"
+  },
+  {
+    "objectID": "incident-ingestion-worker-cache_miss_spike-18",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "prod",
+    "symptoms": [
+      "cache_miss_spike"
+    ],
+    "title": "Incident: ingestion-worker cache_miss_spike \u2014 degraded throughput",
+    "summary": "Past incident involving ingestion-worker with cache_miss_spike. Root cause: key namespace change after deploy.",
+    "tags": [
+      "autoscaling",
+      "kafka",
+      "redis",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-cache_miss_spike-18",
+      "https://example.com/pr/9153"
+    ],
+    "occurred_at": 1741906076,
+    "impact": "degraded throughput",
+    "root_cause": "key namespace change after deploy",
+    "confidence_score": 0.82,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=cache_miss_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::cache_miss_spike"
+  },
+  {
+    "objectID": "incident-auth-api-throttling-19",
+    "type": "incident",
+    "service": "auth-api",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Incident: auth-api throttling \u2014 request timeouts",
+    "summary": "Past incident involving auth-api with throttling. Root cause: client retry storm.",
+    "tags": [
+      "db",
+      "http",
+      "redis",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-auth-api-throttling-19",
+      "https://example.com/pr/8237"
+    ],
+    "occurred_at": 1752514270,
+    "impact": "request timeouts",
+    "root_cause": "client retry storm",
+    "confidence_score": 0.83,
+    "why_shown_template": "Matched service=auth-api; symptom=throttling; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::throttling"
+  },
+  {
+    "objectID": "incident-checkout-api-db_errors-20",
+    "type": "incident",
+    "service": "checkout-api",
+    "env": "prod",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "Incident: checkout-api db_errors \u2014 request timeouts",
+    "summary": "Past incident involving checkout-api with db_errors. Root cause: schema migration lock contention.",
+    "tags": [
+      "autoscaling",
+      "cpu",
+      "mysql",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-checkout-api-db_errors-20",
+      "https://example.com/pr/7248"
+    ],
+    "occurred_at": 1752774593,
+    "impact": "request timeouts",
+    "root_cause": "schema migration lock contention",
+    "confidence_score": 0.72,
+    "why_shown_template": "Matched service=checkout-api; symptom=db_errors; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::db_errors"
+  },
+  {
+    "objectID": "incident-checkout-api-memory_spike-21",
+    "type": "incident",
+    "service": "checkout-api",
+    "env": "staging",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Incident: checkout-api memory_spike \u2014 intermittent failures",
+    "summary": "Past incident involving checkout-api with memory_spike. Root cause: high cardinality metrics.",
+    "tags": [
+      "cpu",
+      "db",
+      "grpc",
+      "k8s"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-checkout-api-memory_spike-21",
+      "https://example.com/pr/4770"
+    ],
+    "occurred_at": 1768086059,
+    "impact": "intermittent failures",
+    "root_cause": "high cardinality metrics",
+    "confidence_score": 0.73,
+    "why_shown_template": "Matched service=checkout-api; symptom=memory_spike; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "checkout-api::memory_spike"
+  },
+  {
+    "objectID": "incident-notifications-cpu_spike-22",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Incident: notifications cpu_spike \u2014 intermittent failures",
+    "summary": "Past incident involving notifications with cpu_spike. Root cause: expensive regex / parsing path.",
+    "tags": [
+      "http",
+      "k8s",
+      "network",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-cpu_spike-22",
+      "https://example.com/pr/6977"
+    ],
+    "occurred_at": 1752739121,
+    "impact": "intermittent failures",
+    "root_cause": "expensive regex / parsing path",
+    "confidence_score": 0.77,
+    "why_shown_template": "Matched service=notifications; symptom=cpu_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::cpu_spike"
+  },
+  {
+    "objectID": "incident-search-api-oom_kills-23",
+    "type": "incident",
+    "service": "search-api",
+    "env": "staging",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Incident: search-api oom_kills \u2014 increased latency",
+    "summary": "Past incident involving search-api with oom_kills. Root cause: memory leak triggered by new code path.",
+    "tags": [
+      "cache",
+      "feature-flag",
+      "io",
+      "memory"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-search-api-oom_kills-23",
+      "https://example.com/pr/3695"
+    ],
+    "occurred_at": 1741674460,
+    "impact": "increased latency",
+    "root_cause": "memory leak triggered by new code path",
+    "confidence_score": 0.63,
+    "why_shown_template": "Matched service=search-api; symptom=oom_kills; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "search-api::oom_kills"
+  },
+  {
+    "objectID": "incident-recommendations-memory_spike-24",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "staging",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Incident: recommendations memory_spike \u2014 elevated error rate",
+    "summary": "Past incident involving recommendations with memory_spike. Root cause: high cardinality metrics.",
+    "tags": [
+      "autoscaling",
+      "cache",
+      "postgres",
+      "rollout"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-memory_spike-24",
+      "https://example.com/pr/2479"
+    ],
+    "occurred_at": 1746827605,
+    "impact": "elevated error rate",
+    "root_cause": "high cardinality metrics",
+    "confidence_score": 0.79,
+    "why_shown_template": "Matched service=recommendations; symptom=memory_spike; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::memory_spike"
+  },
+  {
+    "objectID": "incident-payments-api-p99_latency-25",
+    "type": "incident",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Incident: payments-api p99_latency \u2014 partial outage",
+    "summary": "Past incident involving payments-api with p99_latency. Root cause: lock contention in DB.",
+    "tags": [
+      "autoscaling",
+      "feature-flag",
+      "network",
+      "queue"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-payments-api-p99_latency-25",
+      "https://example.com/pr/8724"
+    ],
+    "occurred_at": 1739038227,
+    "impact": "partial outage",
+    "root_cause": "lock contention in DB",
+    "confidence_score": 0.56,
+    "why_shown_template": "Matched service=payments-api; symptom=p99_latency; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::p99_latency"
+  },
+  {
+    "objectID": "incident-notifications-cpu_spike-26",
+    "type": "incident",
+    "service": "notifications",
+    "env": "staging",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Incident: notifications cpu_spike \u2014 intermittent failures",
+    "summary": "Past incident involving notifications with cpu_spike. Root cause: infinite retry loop.",
+    "tags": [
+      "cache",
+      "dns",
+      "http",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-cpu_spike-26",
+      "https://example.com/pr/1609"
+    ],
+    "occurred_at": 1765315977,
+    "impact": "intermittent failures",
+    "root_cause": "infinite retry loop",
+    "confidence_score": 0.64,
+    "why_shown_template": "Matched service=notifications; symptom=cpu_spike; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::cpu_spike"
+  },
+  {
+    "objectID": "incident-recommendations-cpu_spike-27",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Incident: recommendations cpu_spike \u2014 request timeouts",
+    "summary": "Past incident involving recommendations with cpu_spike. Root cause: infinite retry loop.",
+    "tags": [
+      "cache",
+      "dns",
+      "feature-flag",
+      "io"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-cpu_spike-27",
+      "https://example.com/pr/2622"
+    ],
+    "occurred_at": 1760454140,
+    "impact": "request timeouts",
+    "root_cause": "infinite retry loop",
+    "confidence_score": 0.8,
+    "why_shown_template": "Matched service=recommendations; symptom=cpu_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::cpu_spike"
+  },
+  {
+    "objectID": "incident-ingestion-worker-memory_spike-28",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "staging",
+    "symptoms": [
+      "memory_spike"
+    ],
+    "title": "Incident: ingestion-worker memory_spike \u2014 intermittent failures",
+    "summary": "Past incident involving ingestion-worker with memory_spike. Root cause: large payloads retained in memory.",
+    "tags": [
+      "mysql",
+      "postgres",
+      "queue",
+      "tls"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-memory_spike-28",
+      "https://example.com/pr/2627"
+    ],
+    "occurred_at": 1767362848,
+    "impact": "intermittent failures",
+    "root_cause": "large payloads retained in memory",
+    "confidence_score": 0.84,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=memory_spike; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::memory_spike"
+  },
+  {
+    "objectID": "incident-notifications-throttling-29",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "throttling"
+    ],
+    "title": "Incident: notifications throttling \u2014 elevated error rate",
+    "summary": "Past incident involving notifications with throttling. Root cause: token bucket misconfigured.",
+    "tags": [
+      "grpc",
+      "mysql",
+      "network",
+      "tls"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-throttling-29",
+      "https://example.com/pr/4475"
+    ],
+    "occurred_at": 1745488206,
+    "impact": "elevated error rate",
+    "root_cause": "token bucket misconfigured",
+    "confidence_score": 0.74,
+    "why_shown_template": "Matched service=notifications; symptom=throttling; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::throttling"
+  },
+  {
+    "objectID": "incident-payments-api-oom_kills-30",
+    "type": "incident",
+    "service": "payments-api",
+    "env": "prod",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Incident: payments-api oom_kills \u2014 increased latency",
+    "summary": "Past incident involving payments-api with oom_kills. Root cause: sidecar memory growth.",
+    "tags": [
+      "io",
+      "kafka",
+      "mysql",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-payments-api-oom_kills-30",
+      "https://example.com/pr/4817"
+    ],
+    "occurred_at": 1753212769,
+    "impact": "increased latency",
+    "root_cause": "sidecar memory growth",
+    "confidence_score": 0.65,
+    "why_shown_template": "Matched service=payments-api; symptom=oom_kills; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "payments-api::oom_kills"
+  },
+  {
+    "objectID": "incident-auth-api-auth_failures-31",
+    "type": "incident",
+    "service": "auth-api",
+    "env": "prod",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Incident: auth-api auth_failures \u2014 partial outage",
+    "summary": "Past incident involving auth-api with auth_failures. Root cause: clock skew causing token expiry.",
+    "tags": [
+      "cache",
+      "grpc",
+      "io",
+      "redis"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-auth-api-auth_failures-31",
+      "https://example.com/pr/1422"
+    ],
+    "occurred_at": 1769368110,
+    "impact": "partial outage",
+    "root_cause": "clock skew causing token expiry",
+    "confidence_score": 0.59,
+    "why_shown_template": "Matched service=auth-api; symptom=auth_failures; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "auth-api::auth_failures"
+  },
+  {
+    "objectID": "incident-notifications-cpu_spike-32",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "cpu_spike"
+    ],
+    "title": "Incident: notifications cpu_spike \u2014 elevated error rate",
+    "summary": "Past incident involving notifications with cpu_spike. Root cause: expensive regex / parsing path.",
+    "tags": [
+      "cache",
+      "dns",
+      "grpc",
+      "k8s"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-cpu_spike-32",
+      "https://example.com/pr/2041"
+    ],
+    "occurred_at": 1747830465,
+    "impact": "elevated error rate",
+    "root_cause": "expensive regex / parsing path",
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=notifications; symptom=cpu_spike; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::cpu_spike"
+  },
+  {
+    "objectID": "incident-notifications-p99_latency-33",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Incident: notifications p99_latency \u2014 degraded throughput",
+    "summary": "Past incident involving notifications with p99_latency. Root cause: noisy neighbor on shared node.",
+    "tags": [
+      "http",
+      "k8s",
+      "kafka",
+      "memory"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-p99_latency-33",
+      "https://example.com/pr/1510"
+    ],
+    "occurred_at": 1739224830,
+    "impact": "degraded throughput",
+    "root_cause": "noisy neighbor on shared node",
+    "confidence_score": 0.57,
+    "why_shown_template": "Matched service=notifications; symptom=p99_latency; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::p99_latency"
+  },
+  {
+    "objectID": "incident-recommendations-db_errors-34",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "staging",
+    "symptoms": [
+      "db_errors"
+    ],
+    "title": "Incident: recommendations db_errors \u2014 request timeouts",
+    "summary": "Past incident involving recommendations with db_errors. Root cause: DNS resolution issues to DB host.",
+    "tags": [
+      "cache",
+      "kafka",
+      "rate-limit",
+      "rollout"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-db_errors-34",
+      "https://example.com/pr/3067"
+    ],
+    "occurred_at": 1762313205,
+    "impact": "request timeouts",
+    "root_cause": "DNS resolution issues to DB host",
+    "confidence_score": 0.63,
+    "why_shown_template": "Matched service=recommendations; symptom=db_errors; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::db_errors"
+  },
+  {
+    "objectID": "incident-notifications-auth_failures-35",
+    "type": "incident",
+    "service": "notifications",
+    "env": "prod",
+    "symptoms": [
+      "auth_failures"
+    ],
+    "title": "Incident: notifications auth_failures \u2014 partial outage",
+    "summary": "Past incident involving notifications with auth_failures. Root cause: TLS handshake failures.",
+    "tags": [
+      "dns",
+      "io",
+      "memory",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-notifications-auth_failures-35",
+      "https://example.com/pr/8046"
+    ],
+    "occurred_at": 1733953334,
+    "impact": "partial outage",
+    "root_cause": "TLS handshake failures",
+    "confidence_score": 0.69,
+    "why_shown_template": "Matched service=notifications; symptom=auth_failures; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "notifications::auth_failures"
+  },
+  {
+    "objectID": "incident-orders-api-queue_lag-36",
+    "type": "incident",
+    "service": "orders-api",
+    "env": "prod",
+    "symptoms": [
+      "queue_lag"
+    ],
+    "title": "Incident: orders-api queue_lag \u2014 request timeouts",
+    "summary": "Past incident involving orders-api with queue_lag. Root cause: consumer lag due to CPU throttling.",
+    "tags": [
+      "dns",
+      "grpc",
+      "kafka",
+      "rate-limit"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-orders-api-queue_lag-36",
+      "https://example.com/pr/3500"
+    ],
+    "occurred_at": 1742800071,
+    "impact": "request timeouts",
+    "root_cause": "consumer lag due to CPU throttling",
+    "confidence_score": 0.76,
+    "why_shown_template": "Matched service=orders-api; symptom=queue_lag; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::queue_lag"
+  },
+  {
+    "objectID": "incident-recommendations-p99_latency-37",
+    "type": "incident",
+    "service": "recommendations",
+    "env": "prod",
+    "symptoms": [
+      "p99_latency"
+    ],
+    "title": "Incident: recommendations p99_latency \u2014 request timeouts",
+    "summary": "Past incident involving recommendations with p99_latency. Root cause: tail latency from GC pauses.",
+    "tags": [
+      "cache",
+      "feature-flag",
+      "io",
+      "k8s"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-recommendations-p99_latency-37",
+      "https://example.com/pr/3002"
+    ],
+    "occurred_at": 1763301834,
+    "impact": "request timeouts",
+    "root_cause": "tail latency from GC pauses",
+    "confidence_score": 0.67,
+    "why_shown_template": "Matched service=recommendations; symptom=p99_latency; env=prod (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "recommendations::p99_latency"
+  },
+  {
+    "objectID": "incident-ingestion-worker-packet_loss-38",
+    "type": "incident",
+    "service": "ingestion-worker",
+    "env": "staging",
+    "symptoms": [
+      "packet_loss"
+    ],
+    "title": "Incident: ingestion-worker packet_loss \u2014 partial outage",
+    "summary": "Past incident involving ingestion-worker with packet_loss. Root cause: NAT gateway saturation.",
+    "tags": [
+      "feature-flag",
+      "http",
+      "memory",
+      "network"
+    ],
+    "severity": "med",
+    "links": [
+      "https://example.com/postmortems/incident-ingestion-worker-packet_loss-38",
+      "https://example.com/pr/3535"
+    ],
+    "occurred_at": 1766105913,
+    "impact": "partial outage",
+    "root_cause": "NAT gateway saturation",
+    "confidence_score": 0.75,
+    "why_shown_template": "Matched service=ingestion-worker; symptom=packet_loss; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "ingestion-worker::packet_loss"
+  },
+  {
+    "objectID": "incident-orders-api-oom_kills-39",
+    "type": "incident",
+    "service": "orders-api",
+    "env": "staging",
+    "symptoms": [
+      "oom_kills"
+    ],
+    "title": "Incident: orders-api oom_kills \u2014 elevated error rate",
+    "summary": "Past incident involving orders-api with oom_kills. Root cause: large batch job running in same pod.",
+    "tags": [
+      "db",
+      "dns",
+      "postgres",
+      "queue"
+    ],
+    "severity": "high",
+    "links": [
+      "https://example.com/postmortems/incident-orders-api-oom_kills-39",
+      "https://example.com/pr/1474"
+    ],
+    "occurred_at": 1744891796,
+    "impact": "elevated error rate",
+    "root_cause": "large batch job running in same pod",
+    "confidence_score": 0.6,
+    "why_shown_template": "Matched service=orders-api; symptom=oom_kills; env=staging (or any); similar_past_incident",
+    "checklist_copy_text": "Review postmortem and compare timeline to current alert.",
+    "match_keys": [
+      "service",
+      "env",
+      "symptoms"
+    ],
+    "pattern_key": "orders-api::oom_kills"
+  }
+]
